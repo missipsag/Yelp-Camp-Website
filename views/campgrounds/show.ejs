@@ -1,0 +1,78 @@
+<%- layout('layouts/boilerplate.ejs') %>
+<%- include('../partials/flash') %>
+<div class="row"> 
+  
+    <div class="col-6 <%= campground.reviews.length ? '' : 'offset-3' %>  ">
+      <div class="card mb-4" >
+        <img src="<%= campground.image %> " class="card-img-top" >
+        <div class="card-body">
+          <h5 class="card-title"><%= campground.name %></h5>
+          <p class="card-text"><%= campground.description %>
+          </p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><span class="text-muted">Locaton : </span> <%= campground.location %></li>
+          <li class="list-group-item"> <span class="text-muted">Price : </span><%= campground.price %> $</li>
+        </ul>
+        <div class="card-body d-flex justify-content-around">
+          <form  action="/campgrounds/<%= campground._id %>/?_method=DELETE" method="POST">
+            <button class="btn btn-danger">Remove Camp</button>
+          </form>
+          <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-primary">Edit info</a>
+          <a href="/campgrounds" class="btn btn-success">Back</a>
+        </div>
+      </div>
+      <hr class="mb-3 mt-3">
+      <h2>Leave a Review</h2>
+      <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate>
+        <div class="mb-3">
+          <label class="form-label" for="rating">Rating</label>
+          <input class="form-range" type="range" min="1" max="5" name="rating" id="rating">
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="body">Review</label>
+          <textarea class="form-control" name="body" id="body" cols="30" rows="3" required></textarea>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+        </div>
+        <button class="btn btn-success">Submit</button>
+      </form>
+    </div>
+    <% if (campground.reviews.length){  %> 
+      <div class="col-6"> 
+        <h2 class="text-center mb-3">Site reviews : </h2>
+        <div class="mb-3">
+          <% for( let rev of campground.reviews) {  %>
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5 class="text-muted"><%= rev.rating %> &#9733; </h5>
+                <p class="card-text"><%= rev.body %> </p>
+                <form  action="/campgrounds/<%=campground._id%>/reviews/<%=rev._id %>?_method=DELETE" method="POST">
+                  <button class="btn btn-sm btn-danger"> Delete</button>
+                </form>
+              </div>
+            </div>
+            <% } %> 
+          </div>
+        </div>
+        <% } %> 
+  
+ 
+
+</div>
+
+
+
+
+    
+  
+    
+    
+    
+    
+
+
+
+
+   
