@@ -8,7 +8,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "this is a camp rental website",
   "dependencies": {
     "colors": "^1.4.0",
     "connect-flash": "^0.1.1",
