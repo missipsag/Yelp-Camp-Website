@@ -25,8 +25,6 @@ const User = require("./models/user");
 const users = require("./routes/userRoutes");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-const { fork } = require("child_process");
-
 
 mongoose.connect("mongodb://localhost:27017/yelp-camp");
   
