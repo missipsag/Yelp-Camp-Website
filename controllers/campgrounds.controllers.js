@@ -55,7 +55,10 @@ module.exports.editCampground = async (req, res, next) => {
       return res.redirect("/campgrounds");
     }
     // if the currUser is the author
-    await Campground.findOneAndUpdate({_id : id}, req.body);              
+    await Campground.findOneAndUpdate({_id : id}, req.body); 
+    const imgs = req.files.map( f => ({url : f.path, filename : f.filename}));
+    // because req.files.map returns an array, we have to store it in a variable so we can use the spread opearator 
+    updatedCampground.image.push(...imgs); 
     await updatedCampground.save();
     req.flash("success", 'Successfully updated campground');
     res.redirect(`/campgrounds/${id}`);
