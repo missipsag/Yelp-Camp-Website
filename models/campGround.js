@@ -3,15 +3,21 @@ const Schema = mongoose.Schema;
 const Review = require("./review");
 const { SchemaType } = require("mongoose");
 
+const ImageSchema = new Schema({
+  url : String,
+  filename : String,
+})
+// add the virtual proprety to display a thumbnail in the edit campground template
+ImageSchema.virtual('thumbnail').get(function() {
+  return this.url.replace('/upload','/upload/w_200');
+})
+
 const CampGroundSchema = new Schema({
   name: String, 
   price: Number,
   description: String,
   location: String,
-  image: [{
-    url : String,
-    filename : String,
-    }],
+  image: [ImageSchema],
   author : {
     type : Schema.Types.ObjectId,
     ref : 'User',
