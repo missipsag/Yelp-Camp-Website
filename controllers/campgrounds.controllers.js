@@ -54,11 +54,23 @@ module.exports.editCampground = async (req, res, next) => {
       req.flash("error", "CANNOT FIND CAMPGROUND");
       return res.redirect("/campgrounds");
     }
+
     // if the currUser is the author
     await Campground.findOneAndUpdate({_id : id}, req.body); 
+
     const imgs = req.files.map( f => ({url : f.path, filename : f.filename}));
     // because req.files.map returns an array, we have to store it in a variable so we can use the spread opearator 
-    updatedCampground.image.push(...imgs); 
+    updatedCampground.image.push(...imgs);
+
+    if(req.body.deleteImages){ 
+      //here we delete the images in cloudinary
+      for(let filename of req.body.deleteImages){
+        await cloudinary.uploader.destroy(filename)
+      }
+      // here we delete images from our database
+      await updatedCampground.updateOne({ $pull: {image: {filename: {$in : req.body.deleteImages}}}});
+    }
+
     await updatedCampground.save();
     req.flash("success", 'Successfully updated campground');
     res.redirect(`/campgrounds/${id}`);
