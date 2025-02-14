@@ -53,6 +53,10 @@
       </div>
     </div>
     
+    <div id="map" style="width: 400px; height: 300px;">
+
+    </div>
+
     <div class="col-6"> 
           <% if( currUser) { %> 
             <h2>Leave a Review</h2>
@@ -107,4 +111,10 @@
         <% } %> 
     </div>
 </div>
-   
+<!-- this is for our map, we have to instanciate the maptilerApiKey so that
+  ejs engine cas acces it. (BECAUSE EJS DOSN'T ACCESS THE JS SCRIPTS) -->
+<script>
+  const maptilerApiKey = '<%-process.env.MAPTILER_API_KEY%>';
+  const campground = <%- JSON.stringify(campground) %>
+</script>
+<script src="/javascripts/showPageMap.js"></script>

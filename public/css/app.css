@@ -1,0 +1,9 @@
+#cluster-map {
+    width: 100%;
+    width: 500px;
+}
+
+#map {
+    height: 300px;
+    width: 100%;
+}
