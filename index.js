@@ -25,6 +25,7 @@ const User = require("./models/user");
 const users = require("./routes/userRoutes");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const expressMongoSanitize = require("express-mongo-sanitize");
 
 mongoose.connect("mongodb://localhost:27017/yelp-camp");
   
@@ -47,7 +48,8 @@ const sessionConfig = {
    }  
 };
 
-
+// use the express-mongo-sanitize, in order to eliminate mongo injections
+app.use(expressMongoSanitize());
 app.use(passport.initialize());
 //use Session before passport.session
 app.use(Session(sessionConfig));
@@ -69,6 +71,7 @@ app.use(Session(sessionConfig));
 app.use(flash());
 app.use(express.static(path.join(__dirname, './public')));
 app.use((req, res, next) => {
+  console.log(req.query)
   res.locals.returnTo = req.session.returnTo;
   res.locals.currUser = req.user;
   res.locals.success = req.flash("success");
