@@ -1,6 +1,8 @@
 <% layout('layouts/boilerplate.ejs')%> 
 <div class="alert alert-danger" role="alert">
   <h4 class="alert-heading">Error <%= err.statusCode %>, <%= err.message  %>  </h4>
+  <% if(process.env.NODE_ENV !== "production") { %> 
   <br>
   <p><%= err.stack  %> </p>
+  <% } %> 
 </div>
