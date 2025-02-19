@@ -45,7 +45,7 @@ const store = MongoStore.create({
   mongoUrl: dbUrl,
   touchAfter: 24 * 60 * 60,
   crypto: {
-    secret : 'thissouldbeabettersecret'
+    secret : process.env.SECRET
   }
 })
 
@@ -58,7 +58,7 @@ const sessionConfig = {
   name : 'session',
   resave : false, 
   saveUninitialized : false,
-  secret : 'thisshouldbeabettersecret',
+  secret : process.env.SECRET,
   cookie : {
     expires : Date.now() + 1000 * 60 * 60 * 24 * 7,  
     maxAge : 1000 * 60 * 60 * 24 * 7, 
@@ -139,7 +139,6 @@ app.use(Session(sessionConfig));
 app.use(flash());
 app.use(express.static(path.join(__dirname, './public')));
 app.use((req, res, next) => {
-  console.log(req.query)
   res.locals.returnTo = req.session.returnTo;
   res.locals.currUser = req.user;
   res.locals.success = req.flash("success");
