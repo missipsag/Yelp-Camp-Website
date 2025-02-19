@@ -27,10 +27,12 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const expressMongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
+const dbUrl = 'mongodb://127.0.0.1:27017/yelp-camp';
+const MongoStore = require("connect-mongo");
 
-mongoose.connect("mongodb://localhost:27017/yelp-camp");
+mongoose.connect(dbUrl);
   
-const db = mongoose.connection;
+const db = mongoose.connection; 
 db.on("error", console.error.bind(console, 'connection error : '));
 db.once("open", () => {
   console.log("Database connected".blue);
@@ -38,7 +40,21 @@ db.once("open", () => {
 
 const app = express();
 
+// here we add a mongo store in order to store our session in database
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  touchAfter: 24 * 60 * 60,
+  crypto: {
+    secret : 'thissouldbeabettersecret'
+  }
+})
+
+store.on("error", function (e) {
+  console.log("SESSION STORE ERROR");
+})
+
 const sessionConfig = {
+  store,
   name : 'session',
   resave : false, 
   saveUninitialized : false,
